@@ -13,7 +13,6 @@ const connectDB = async () => {
     }
 };
 
-// Eventos de conexión
 mongoose.connection.on('connected', () => {
     console.log('Mongoose conectado a MongoDB');
 });
