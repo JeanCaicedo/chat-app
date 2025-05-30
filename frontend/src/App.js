@@ -1,52 +1,42 @@
 import React, { useState } from 'react';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { SocketProvider } from './contexts/SocketContext';
+import Login from './components/Auth/Login';
+import Register from './components/Auth/Register';
 import Chat from './components/Chat';
 import './App.css';
 
-function App() {
-  const [username, setUsername] = useState('');
-  const [roomId, setRoomId] = useState('');
-  const [isJoined, setIsJoined] = useState(false);
+function AppContent() {
+    const [showLogin, setShowLogin] = useState(true);
+    const { user, loading } = useAuth();
 
-  const handleJoin = (e) => {
-    e.preventDefault();
-    if (username.trim() && roomId.trim()) {
-      setIsJoined(true);
+    if (loading) {
+        return <div className="loading">Cargando...</div>;
     }
-  };
 
-  if (!isJoined) {
+    if (!user) {
+        return showLogin ? (
+            <Login onToggleForm={() => setShowLogin(false)} />
+        ) : (
+            <Register onToggleForm={() => setShowLogin(true)} />
+        );
+    }
+
     return (
-      <div className="join-container">
-        <form onSubmit={handleJoin} className="join-form">
-          <h2>Unirse al Chat</h2>
-          <input
-            type="text"
-            placeholder="Tu nombre"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-          <input
-            type="text"
-            placeholder="ID de la sala"
-            value={roomId}
-            onChange={(e) => setRoomId(e.target.value)}
-            required
-          />
-          <button type="submit">Unirse</button>
-        </form>
-      </div>
+        <SocketProvider>
+            <div className="App">
+                <Chat username={user.username} />
+            </div>
+        </SocketProvider>
     );
-  }
+}
 
-  return (
-    <SocketProvider>
-      <div className="App">
-        <Chat roomId={roomId} username={username} />
-      </div>
-    </SocketProvider>
-  );
+function App() {
+    return (
+        <AuthProvider>
+            <AppContent />
+        </AuthProvider>
+    );
 }
 
 export default App;
