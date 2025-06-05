@@ -37,7 +37,7 @@ app.get('/', (req, res) => {
     res.json({ message: 'Backend funcionando correctamente' });
 });
 
-// Configuración de Socket.IO
+// Configuracion para poder usar Socket.IO
 io.on('connection', (socket) => {
     console.log('Usuario conectado:', socket.id);
 

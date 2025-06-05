@@ -29,7 +29,7 @@ const messageSchema = new mongoose.Schema({
     timestamps: true
 });
 
-// Índices para mejorar el rendimiento de las consultas
+// Mejorar el rendimiento de las consultas
 messageSchema.index({ room: 1, createdAt: -1 });
 messageSchema.index({ sender: 1 });
 

@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecreto';
 
-// Registro de usuario
+// Registro de los usuarios
 exports.register = async (req, res) => {
     try {
         const { email, password, username } = req.body;
